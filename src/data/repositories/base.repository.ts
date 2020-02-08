@@ -6,7 +6,7 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export abstract class BaseRepository<T extends { id: number; }> {
-  db: lowdb.LowdbSync<ConfAppDb>;
+  protected db: lowdb.LowdbSync<ConfAppDb>;
 
   constructor(private entityName: string) {
     const adapter = new FileSync('./src/data/db.json', {
