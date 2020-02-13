@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 
 // Exercise:
 // We want to make a request to /speakers to get the list of speakers
@@ -7,10 +7,11 @@ import { Controller } from '@nestjs/common';
 //
 // Solution Branch: exercise-controller-solution
 
-@Controller('')
+@Controller('speakers')
 export class SpeakersController {
 
 
+  @Get()
   getList() {
     return [
       { name: 'Amanda' },
