@@ -13,7 +13,7 @@ export class RoomsController {
   }
 
   @Get()
-  getList() {
-    return this.roomsRepository.getAll();
+  getList(@Query('name') name?: string) {
+    return this.roomsRepository.getAll({name});
   }
 }
