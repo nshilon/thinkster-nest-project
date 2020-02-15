@@ -9,7 +9,7 @@ export interface SpeakerParams extends ParamsBase {
 }
 
 @Injectable()
-export class SpeakersRepository extends BaseRepository<SpeakerEntity> {
+export class SpeakersRepository extends BaseRepository<SpeakerEntity, SpeakerParams> {
 
   constructor() {
     super('speakers');
