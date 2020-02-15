@@ -9,7 +9,7 @@ export interface SessionParams extends ParamsBase {
 }
 
 @Injectable()
-export class SessionsRepository extends BaseRepository<SessionEntity> {
+export class SessionsRepository extends BaseRepository<SessionEntity, SessionParams> {
 
   constructor() {
     super('sessions');

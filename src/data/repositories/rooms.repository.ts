@@ -9,7 +9,7 @@ export interface RoomParams extends ParamsBase {
 }
 
 @Injectable()
-export class RoomsRepository extends BaseRepository<RoomEntity> {
+export class RoomsRepository extends BaseRepository<RoomEntity, RoomParams> {
 
   constructor() {
     super('rooms');
