@@ -1,4 +1,4 @@
-import { Controller, Get, Query, Param } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { RoomsRepository } from 'src/data/repositories/rooms.repository';
 
 @Controller('rooms')
