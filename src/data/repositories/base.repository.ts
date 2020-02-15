@@ -5,7 +5,7 @@ import { EntityNotFoundException } from './entity-not-found.exception';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export abstract class BaseRepository<T extends { id: number; }> {
+export abstract class BaseRepository<T extends { id: number; }, P extends ParamsBase> {
   protected db: lowdb.LowdbSync<ConfAppDb>;
 
   constructor(private entityName: string) {
@@ -15,7 +15,7 @@ export abstract class BaseRepository<T extends { id: number; }> {
     this.db = lowdb(adapter);
   }
 
-  async getAll(params: ParamsBase = {}): Promise<QueryResult<T>> {
+  async getAll(params: P = {} as any): Promise<QueryResult<T>> {
     let db = this.db.get(this.entityName);
     if (params.sort) {
       db = db.sortBy((item) => {
