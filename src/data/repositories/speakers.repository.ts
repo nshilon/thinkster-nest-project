@@ -19,7 +19,7 @@ export class SpeakersRepository extends BaseRepository<SpeakerEntity> {
     if (params && params.name) {
       db = db.filter(x => x.name.toLowerCase().indexOf(params.name.toLowerCase()) > -1);
     }
-    if (params && params.hasSpokenBefore) {
+    if (params && typeof params.hasSpokenBefore === 'boolean') {
       db = db.filter(x => x.hasSpokeBefore === params.hasSpokenBefore);
     }
     return db;
