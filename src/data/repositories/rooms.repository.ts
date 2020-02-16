@@ -19,7 +19,7 @@ export class RoomsRepository extends BaseRepository<RoomEntity, RoomParams> {
     if (params && params.name) {
       db = db.filter(x => x.name.toLowerCase().indexOf(params.name.toLowerCase()) > -1);
     }
-    if(params && params.capacity) {
+    if(params && typeof params.capacity === 'number') {
       db = db.filter(x => x.capacity >= params.capacity)
     }
     return db;
