@@ -1,5 +1,13 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { SpeakersRepository } from 'src/data/repositories/speakers.repository';
+
+// Exercise:
+// Update the getAll method to take a query param named hasSpokenBefore,
+// which is a boolean value.
+// Make a requests to:
+// /speakers?hasSpokenBefore=true and
+// /speakers/hasSpokenBefore=false
+// and make sure the appropriate speakers get returned
 
 @Controller('speakers')
 export class SpeakersController {
@@ -13,7 +21,7 @@ export class SpeakersController {
   }
 
   @Get()
-  getList() {
-    return this.speakersRepository.getAll();
+  getList(@Query('name') name?: string) {
+    return this.speakersRepository.getAll({ name });
   }
 }
