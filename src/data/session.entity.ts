@@ -3,10 +3,10 @@ export class SessionEntity {
   id: number;
   title: string;
   speakerId: number;
-  abstract: string;
-  time: string;
+  abstract?: string;
+  time: Date;
   roomId: number;
   createdAt: Date = new Date();
-  createdBy = 'admin';
-  level: string
+  createdBy: string;
+  level: 'beginner' | 'intermediate' | 'advanced'
 }
