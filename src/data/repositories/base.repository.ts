@@ -1,11 +1,13 @@
 import * as FileSync from 'lowdb/adapters/FileSync';
 import * as lowdb from 'lowdb';
 import { ConfAppDb, ParamsBase, QueryResult } from './models';
-import { EntityNotFoundException } from './entity-not-found.exception';
+import { EntityNotFoundException, EntityConstraintException } from './entity-not-found.exception';
 import { Injectable } from '@nestjs/common';
 
+interface EntityBase { id: number; createdBy: string; createdAt: Date };
+
 @Injectable()
-export abstract class BaseRepository<T extends { id: number; }, P extends ParamsBase> {
+export abstract class BaseRepository<T extends EntityBase, P extends ParamsBase> {
   protected db: lowdb.LowdbSync<ConfAppDb>;
 
   constructor(private entityName: string) {
@@ -60,6 +62,18 @@ export abstract class BaseRepository<T extends { id: number; }, P extends Params
   // Overriden in sub class to map plain JS object to proper entity
   protected abstract mapEntity(entity: any);
 
+  // Overriden in sub class to map plain JS object to proper entity
+  protected validateEntity(entity: EntityBase): string[] {
+    const errors: string[] = [];
+    if(typeof entity.createdBy !== 'string' || entity.createdBy.length === 0) {
+      errors.push('CreatedBy is required and cannot be empty');
+    }
+    if(typeof entity.createdAt !== 'object' || typeof entity.createdAt.getMonth !== 'function') {
+      errors.push('CreatedAt is required and must be a date');
+    }
+    return errors;
+  };
+
   async get(id: number): Promise<T> {
     const dbRecord = await this.db
       .get(this.entityName)
@@ -73,6 +87,11 @@ export abstract class BaseRepository<T extends { id: number; }, P extends Params
   }
 
   async create(entity: T) {
+    const errors = this.validateEntity(entity);
+    if(errors.length > 0) {
+      const message = errors.reduce((prev, cur) => prev + ', ' + cur, '');
+      throw new EntityConstraintException(message);
+    }
     const entities = await this.getAll();
     const maxId = Math.max(...entities.data.map(x => x.id));
     entity.id = maxId + 1;
@@ -137,7 +156,7 @@ const defaultData: ConfAppDb = {
       title: 'Always be Coding',
       speakerId: 1,
       abstract: 'Info about Always be Coding session',
-      time: '2019-12-14T8:00Z',
+      time: new Date('2019-12-14T08:00Z'),
       roomId: 1,
       createdAt: new Date('2019-12-14T20:54:28.754Z'),
       createdBy: 'admin',
@@ -148,7 +167,7 @@ const defaultData: ConfAppDb = {
       title: 'Intro to Programming',
       speakerId: 2,
       abstract: 'Info about Intro to Programming session',
-      time: '2019-12-14T8:00Z',
+      time: new Date('2019-12-14T09:00Z'),
       roomId: 2,
       createdAt: new Date('2019-12-14T20:54:28.754Z'),
       createdBy: 'admin',
@@ -159,7 +178,7 @@ const defaultData: ConfAppDb = {
       title: 'Which Framework is Right for You?',
       speakerId: 3,
       abstract: 'Info about Which Framework is Right for You? session',
-      time: '2019-12-14T8:00Z',
+      time: new Date('2019-12-14T10:00Z'),
       roomId: 3,
       createdAt: new Date('2019-12-14T20:54:28.754Z'),
       createdBy: 'admin',
@@ -170,7 +189,7 @@ const defaultData: ConfAppDb = {
       title: 'Data Structures for Everyone',
       speakerId: 4,
       abstract: 'Info about Data Structures for Everyone session',
-      time: '2019-12-14T8:00Z',
+      time: new Date('2019-12-14T11:00Z'),
       roomId: 3,
       createdAt: new Date('2019-12-14T20:54:28.754Z'),
       createdBy: 'admin',
@@ -182,7 +201,6 @@ const defaultData: ConfAppDb = {
       id: 1,
       name: 'Abe Adams',
       bio: 'Abe is a dev',
-      imgUrl: 'http://image.jpg',
       createdAt: new Date('2019-12-14T20:54:28.754Z'),
       createdBy: 'admin',
       hasSpokeBefore: true
@@ -191,7 +209,6 @@ const defaultData: ConfAppDb = {
       id: 2,
       name: 'Vicky Vasquez',
       bio: 'Vicky is a dev',
-      imgUrl: 'http://image.jpg',
       createdAt: new Date('2019-12-14T20:54:28.754Z'),
       createdBy: 'admin',
       hasSpokeBefore: true
@@ -200,7 +217,6 @@ const defaultData: ConfAppDb = {
       id: 3,
       name: 'Charlie Cook',
       bio: 'Charlie is a dev',
-      imgUrl: 'http://image.jpg',
       createdAt: new Date('2019-12-14T20:54:28.754Z'),
       createdBy: 'admin',
       hasSpokeBefore: false
@@ -209,7 +225,6 @@ const defaultData: ConfAppDb = {
       id: 4,
       name: 'Maria Moore',
       bio: 'Maria is a dev',
-      imgUrl: 'http://image.jpg',
       createdAt: new Date('2019-12-14T20:54:28.754Z'),
       createdBy: 'admin',
       hasSpokeBefore: false
