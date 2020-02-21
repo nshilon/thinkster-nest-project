@@ -31,4 +31,24 @@ export class SessionsRepository extends BaseRepository<SessionEntity, SessionPar
     }) as SessionEntity;
     return session;
   }
+
+  protected validateEntity(entity: SessionEntity) {
+    const errors = super.validateEntity(entity);
+    if(typeof entity.title !== 'string' || entity.title.length === 0) {
+      errors.push('Title is required and cannot be empty');
+    }
+    if(typeof entity.speakerId !== 'number' || entity.speakerId <= 0) {
+      errors.push('SpeakerId is required');
+    }
+    if(typeof entity.roomId !== 'number' || entity.roomId <= 0) {
+      errors.push('RoomId is required');
+    }
+    if(typeof entity.time !== 'object' || typeof entity.time.getMonth !== 'function') {
+      errors.push('CreatedAt is required and must be a date');
+    }
+    if(typeof entity.level !== 'string' || (entity.level !== 'beginner' && entity.level !== 'advanced' && entity.level !== 'intermediate')) {
+      errors.push('Level is required and must be beginner, intermediate, or advanced');
+    }
+    return errors;
+  }
 }
