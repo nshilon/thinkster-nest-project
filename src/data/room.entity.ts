@@ -3,5 +3,5 @@ export class RoomEntity {
   name: string;
   capacity: number;
   createdAt: Date = new Date();
-  createdBy = 'admin';
+  createdBy: string;
 }
