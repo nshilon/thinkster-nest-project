@@ -9,7 +9,7 @@ export interface SpeakerParams extends ParamsBase {
 }
 
 @Injectable()
-export class SpeakersRepository extends BaseRepository<SpeakerEntity> {
+export class SpeakersRepository extends BaseRepository<SpeakerEntity, SpeakerParams> {
 
   constructor() {
     super('speakers');
@@ -19,7 +19,7 @@ export class SpeakersRepository extends BaseRepository<SpeakerEntity> {
     if (params && params.name) {
       db = db.filter(x => x.name.toLowerCase().indexOf(params.name.toLowerCase()) > -1);
     }
-    if (params && params.hasSpokenBefore) {
+    if (params && typeof params.hasSpokenBefore === 'boolean') {
       db = db.filter(x => x.hasSpokeBefore === params.hasSpokenBefore);
     }
     return db;
@@ -30,6 +30,17 @@ export class SpeakersRepository extends BaseRepository<SpeakerEntity> {
       createdAt: new Date(entity.createdAt)
     }) as SpeakerEntity;
     return speaker;
+  }
+
+  protected validateEntity(entity: SpeakerEntity) {
+    const errors = super.validateEntity(entity);
+    if(typeof entity.name !== 'string' || entity.name.length === 0) {
+      errors.push('Name is required and cannot be empty');
+    }
+    if(typeof entity.hasSpokeBefore !== 'boolean') {
+      errors.push('HasSpokenBefore is required and must be true or false');
+    }
+    return errors;
   }
 
 }

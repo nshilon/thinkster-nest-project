@@ -9,7 +9,7 @@ export interface RoomParams extends ParamsBase {
 }
 
 @Injectable()
-export class RoomsRepository extends BaseRepository<RoomEntity> {
+export class RoomsRepository extends BaseRepository<RoomEntity, RoomParams> {
 
   constructor() {
     super('rooms');
@@ -19,7 +19,7 @@ export class RoomsRepository extends BaseRepository<RoomEntity> {
     if (params && params.name) {
       db = db.filter(x => x.name.toLowerCase().indexOf(params.name.toLowerCase()) > -1);
     }
-    if(params && params.capacity) {
+    if(params && typeof params.capacity === 'number' && !Number.isNaN(params.capacity)) {
       db = db.filter(x => x.capacity >= params.capacity)
     }
     return db;
@@ -30,6 +30,17 @@ export class RoomsRepository extends BaseRepository<RoomEntity> {
       createdAt: new Date(entity.createdAt)
     }) as RoomEntity;
     return room;
+  }
+
+  protected validateEntity(entity: RoomEntity) {
+    const errors = super.validateEntity(entity);
+    if(typeof entity.name !== 'string' || entity.name.length === 0) {
+      errors.push('Name is required and cannot be empty');
+    }
+    if(typeof entity.capacity !== 'number' || entity.capacity <= 0) {
+      errors.push('Capacity is required and must be larger than 0');
+    }
+    return errors;
   }
 
 }
