@@ -35,10 +35,10 @@ export class RoomsRepository extends BaseRepository<RoomEntity, RoomParams> {
   protected validateEntity(entity: RoomEntity) {
     const errors = super.validateEntity(entity);
     if(typeof entity.name !== 'string' || entity.name.length === 0) {
-      errors.push('Name is required and cannot be empty');
+      errors.push('name is required and cannot be empty');
     }
     if(typeof entity.capacity !== 'number' || entity.capacity <= 0) {
-      errors.push('Capacity is required and must be larger than 0');
+      errors.push('capacity is required and must be larger than 0');
     }
     return errors;
   }
