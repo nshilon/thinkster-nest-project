@@ -35,19 +35,16 @@ export class SessionsRepository extends BaseRepository<SessionEntity, SessionPar
   protected validateEntity(entity: SessionEntity) {
     const errors = super.validateEntity(entity);
     if(typeof entity.title !== 'string' || entity.title.length === 0) {
-      errors.push('Title is required and cannot be empty');
+      errors.push('title is required and cannot be empty');
     }
     if(typeof entity.speakerId !== 'number' || entity.speakerId <= 0) {
-      errors.push('SpeakerId is required');
+      errors.push('speakerId is required');
     }
     if(typeof entity.roomId !== 'number' || entity.roomId <= 0) {
-      errors.push('RoomId is required');
-    }
-    if(typeof entity.time !== 'object' || typeof entity.time.getMonth !== 'function') {
-      errors.push('CreatedAt is required and must be a date');
+      errors.push('roomId is required');
     }
     if(typeof entity.level !== 'string' || (entity.level !== 'beginner' && entity.level !== 'advanced' && entity.level !== 'intermediate')) {
-      errors.push('Level is required and must be beginner, intermediate, or advanced');
+      errors.push('level is required and must be beginner, intermediate, or advanced');
     }
     return errors;
   }
