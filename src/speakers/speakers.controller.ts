@@ -11,8 +11,8 @@ export class SpeakersController {
 
   constructor(private speakersRepository: SpeakersRepository) { }
 
-  @Get('id')
-  get(idStr: string) {
+  @Get(':id')
+  get(@Param('id') idStr: string) {
     const id = parseInt(idStr, 10);
     return this.speakersRepository.get(id);
   }
