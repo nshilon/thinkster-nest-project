@@ -117,6 +117,7 @@ export abstract class BaseRepository<T extends { id: number; }, P extends Params
 
   async delete(id: number) {
     this.db
+      .get(this.entityName)
       .remove({ id })
       .write();
   }
