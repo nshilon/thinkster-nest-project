@@ -21,7 +21,13 @@ export class SpeakersController {
   }
 
   @Get()
-  getList(@Query('name') name?: string) {
-    return this.speakersRepository.getAll({ name });
+  getList(@Query('name') name?: string, @Query('hasSpokenBefore') hasSpokenBeforeStr?: string) {
+    let hasSpokenBefore: boolean;
+    if(hasSpokenBeforeStr === 'true') {
+      hasSpokenBefore = true;
+    } else if(hasSpokenBeforeStr === 'false') {
+      hasSpokenBefore = false
+    }
+    return this.speakersRepository.getAll({ name, hasSpokenBefore });
   }
 }
