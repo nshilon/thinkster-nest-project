@@ -35,10 +35,10 @@ export class SpeakersRepository extends BaseRepository<SpeakerEntity, SpeakerPar
   protected async validateEntity(entity: SpeakerEntity) {
     const errors = await super.validateEntity(entity);
     if(typeof entity.name !== 'string' || entity.name.length === 0) {
-      errors.push('Name is required and cannot be empty');
+      errors.push('name is required and cannot be empty');
     }
     if(typeof entity.hasSpokeBefore !== 'boolean') {
-      errors.push('HasSpokenBefore is required and must be true or false');
+      errors.push('hasSpokeBefore is required and must be true or false');
     }
     return errors;
   }
