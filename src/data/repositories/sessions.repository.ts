@@ -38,10 +38,10 @@ export class SessionsRepository extends BaseRepository<SessionEntity, SessionPar
   protected async validateEntity(entity: SessionEntity) {
     const errors = await super.validateEntity(entity);
     if(typeof entity.title !== 'string' || entity.title.length === 0) {
-      errors.push('Title is required and cannot be empty');
+      errors.push('title is required and cannot be empty');
     }
     if(typeof entity.speakerId !== 'number' || entity.speakerId <= 0) {
-      errors.push('SpeakerId is required');
+      errors.push('speakerId is required');
     }
     if(typeof entity.roomId !== 'number' || entity.roomId <= 0) {
       errors.push('RoomId is required');
