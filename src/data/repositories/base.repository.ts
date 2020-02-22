@@ -112,7 +112,7 @@ export abstract class BaseRepository<T extends { id: number; }, P extends Params
       .find(x => (x.id as any) === id)
       .assign(entity)
       .write();
-    return await entity;
+    return this.get(id);
   }
 
   async delete(id: number) {
