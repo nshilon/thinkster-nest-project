@@ -63,7 +63,7 @@ export abstract class BaseRepository<T extends EntityBase, P extends ParamsBase>
   protected abstract mapEntity(entity: any);
 
   // Overriden in sub class to map plain JS object to proper entity
-  protected validateEntity(entity: EntityBase): string[] {
+  protected async validateEntity(entity: EntityBase) {
     const errors: string[] = [];
     if(typeof entity.createdBy !== 'string' || entity.createdBy.length === 0) {
       errors.push('CreatedBy is required and cannot be empty');
@@ -87,7 +87,7 @@ export abstract class BaseRepository<T extends EntityBase, P extends ParamsBase>
   }
 
   async create(entity: T) {
-    const errors = this.validateEntity(entity);
+    const errors = await this.validateEntity(entity);
     if(errors.length > 0) {
       const message = errors.reduce((prev, cur) => prev + ', ' + cur, '');
       throw new EntityConstraintException(message);
@@ -103,6 +103,11 @@ export abstract class BaseRepository<T extends EntityBase, P extends ParamsBase>
   }
 
   async update(id: number, entity: T) {
+    const errors = await this.validateEntity(entity);
+    if(errors.length > 0) {
+      const message = errors.reduce((prev, cur) => prev + ', ' + cur, '');
+      throw new EntityConstraintException(message);
+    }
     this.db
       .get(this.entityName)
       .find(x => (x.id as any) === id)
