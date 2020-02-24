@@ -2,6 +2,9 @@ import { BaseRepository } from './base.repository';
 import { Injectable } from '@nestjs/common';
 import { ParamsBase } from './models';
 import { SessionEntity } from '../session.entity';
+import { RoomsRepository } from './rooms.repository';
+import { SpeakersRepository } from './speakers.repository';
+import { EntityNotFoundException } from './entity-not-found.exception';
 
 export interface SessionParams extends ParamsBase {
   title?: string;
@@ -11,7 +14,7 @@ export interface SessionParams extends ParamsBase {
 @Injectable()
 export class SessionsRepository extends BaseRepository<SessionEntity, SessionParams> {
 
-  constructor() {
+  constructor(private roomsRepository: RoomsRepository, private speakersRepository: SpeakersRepository) {
     super('sessions');
   }
 
@@ -32,8 +35,8 @@ export class SessionsRepository extends BaseRepository<SessionEntity, SessionPar
     return session;
   }
 
-  protected validateEntity(entity: SessionEntity) {
-    const errors = super.validateEntity(entity);
+  protected async validateEntity(entity: SessionEntity) {
+    const errors = await super.validateEntity(entity);
     if(typeof entity.title !== 'string' || entity.title.length === 0) {
       errors.push('Title is required and cannot be empty');
     }
@@ -42,6 +45,20 @@ export class SessionsRepository extends BaseRepository<SessionEntity, SessionPar
     }
     if(typeof entity.roomId !== 'number' || entity.roomId <= 0) {
       errors.push('RoomId is required');
+    }
+    try {
+      await this.speakersRepository.get(entity.roomId);
+    } catch(ex) {
+      if(ex instanceof EntityNotFoundException) {
+        errors.push(`roomId ${entity.roomId} does not exist in table rooms`)
+      }
+    }
+    try {
+      await this.speakersRepository.get(entity.speakerId);
+    } catch(ex) {
+      if(ex instanceof EntityNotFoundException) {
+        errors.push(`speakerId ${entity.speakerId} does not exist in table speakers`)
+      }
     }
     return errors;
   }

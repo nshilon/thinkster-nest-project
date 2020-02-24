@@ -32,8 +32,8 @@ export class RoomsRepository extends BaseRepository<RoomEntity, RoomParams> {
     return room;
   }
 
-  protected validateEntity(entity: RoomEntity) {
-    const errors = super.validateEntity(entity);
+  protected async validateEntity(entity: RoomEntity) {
+    const errors = await super.validateEntity(entity);
     if(typeof entity.name !== 'string' || entity.name.length === 0) {
       errors.push('Name is required and cannot be empty');
     }
