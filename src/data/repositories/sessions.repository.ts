@@ -63,6 +63,20 @@ export class SessionsRepository extends BaseRepository<SessionEntity, SessionPar
         errors.push(`speakerId ${entity.speakerId} does not exist in table speakers`)
       }
     }
+    try {
+      await this.speakersRepository.get(entity.roomId);
+    } catch(ex) {
+      if(ex instanceof EntityNotFoundException) {
+        errors.push(`roomId ${entity.roomId} does not exist in table rooms`)
+      }
+    }
+    try {
+      await this.speakersRepository.get(entity.speakerId);
+    } catch(ex) {
+      if(ex instanceof EntityNotFoundException) {
+        errors.push(`speakerId ${entity.speakerId} does not exist in table speakers`)
+      }
+    }
     return errors;
   }
 }
