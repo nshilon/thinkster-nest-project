@@ -1,5 +1,6 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Get, Param, Query, Post, Body, Delete, Put } from '@nestjs/common';
 import { SpeakersRepository } from 'src/data/repositories/speakers.repository';
+import { SpeakerEntity } from 'src/data/speaker.entity';
 
 @Controller('speakers')
 export class SpeakersController {
@@ -22,5 +23,25 @@ export class SpeakersController {
     }
     return this.speakersRepository.getAll({ name, hasSpokenBefore });
   }
+
+  @Post()
+  create(@Body() speaker: unknown) {
+    const speakerEntity = Object.assign(new SpeakerEntity(), speaker);
+    speakerEntity.createdBy = 'admin';
+    return this.speakersRepository.create(speakerEntity);
+  }
+
+  @Put(':id')
+  update(@Param('id') idStr: string, @Body() speaker: unknown) {
+    const id = parseInt(idStr, 10);
+    const speakerEntity = Object.assign(new SpeakerEntity(), speaker);
+    return this.speakersRepository.update(id, speakerEntity);
+  }
+
+  @Delete(':id')
+  delete(@Param('id') idStr: string) {
+    const id = parseInt(idStr, 10);
+    return this.speakersRepository.delete(id);
+  } 
 
 }
