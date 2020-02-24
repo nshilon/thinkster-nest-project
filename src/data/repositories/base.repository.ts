@@ -7,11 +7,7 @@ import { Injectable } from '@nestjs/common';
 interface EntityBase { id: number; createdBy: string; createdAt: Date };
 
 @Injectable()
-<<<<<<< HEAD
 export abstract class BaseRepository<T extends EntityBase, P extends ParamsBase> {
-=======
-export abstract class BaseRepository<T extends { id: number; }, P extends ParamsBase> {
->>>>>>> b0afb7e... fixing repos params
   protected db: lowdb.LowdbSync<ConfAppDb>;
 
   constructor(private entityName: string) {
