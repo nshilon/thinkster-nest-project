@@ -49,6 +49,20 @@ export class SessionsRepository extends BaseRepository<SessionEntity, SessionPar
     if(typeof entity.level !== 'string' || (entity.level !== 'beginner' && entity.level !== 'advanced' && entity.level !== 'intermediate')) {
       errors.push('level is required and must be beginner, intermediate, or advanced');
     }
+    try {
+      await this.speakersRepository.get(entity.roomId);
+    } catch(ex) {
+      if(ex instanceof EntityNotFoundException) {
+        errors.push(`roomId ${entity.roomId} does not exist in table rooms`)
+      }
+    }
+    try {
+      await this.speakersRepository.get(entity.speakerId);
+    } catch(ex) {
+      if(ex instanceof EntityNotFoundException) {
+        errors.push(`speakerId ${entity.speakerId} does not exist in table speakers`)
+      }
+    }
     return errors;
   }
 }
