@@ -17,7 +17,8 @@ export class SpeakersController {
 
   constructor(private speakersRepository: SpeakersRepository) { }
 
-  create(speaker: unknown) {
+  @Post()
+  create(@Body() speaker: unknown) {
     const speakerEntity = Object.assign(new SpeakerEntity(), speaker);
     speakerEntity.createdBy = 'admin';
     return this.speakersRepository.create(speakerEntity);
