@@ -43,12 +43,6 @@ export class SessionsRepository extends BaseRepository<SessionEntity, SessionPar
     if(typeof entity.roomId !== 'number' || entity.roomId <= 0) {
       errors.push('RoomId is required');
     }
-    if(typeof entity.time !== 'object' || typeof entity.time.getMonth !== 'function') {
-      errors.push('CreatedAt is required and must be a date');
-    }
-    if(typeof entity.level !== 'string' || (entity.level !== 'beginner' && entity.level !== 'advanced' && entity.level !== 'intermediate')) {
-      errors.push('Level is required and must be beginner, intermediate, or advanced');
-    }
     return errors;
   }
 }
