@@ -1,13 +1,5 @@
 import { ArgumentMetadata, Injectable, PipeTransform } from '@nestjs/common';
 
-// Exercise:
-// Move the string to boolean conversion logic from the speakers controller into
-// the pipe below. Make sure to test if the metatype is a Boolean and run the logic if so.
-// Update the hasSpokenBefore param to getList to be a boolean.
-// You will also need to bind the Pipe to the application.
-// Once done, make a request to /speakers?hasSpokenBefore=true and make sure the request
-// still returns the appropriate results.
-
 @Injectable()
 export class ConvertPipe implements PipeTransform {
   transform(value: any, metadata: ArgumentMetadata) {
