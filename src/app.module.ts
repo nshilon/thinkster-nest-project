@@ -11,6 +11,10 @@ import { SessionsRepository } from './data/repositories/sessions.repository';
 @Module({
   imports: [],
   controllers: [AppController, RoomsController, SpeakersController, SessionsController],
-  providers: [AppService, RoomsRepository, SpeakersRepository, SessionsRepository],
+  providers: [
+    AppService, 
+    RoomsRepository, 
+    SpeakersRepository, 
+    SessionsRepository],
 })
 export class AppModule {}
