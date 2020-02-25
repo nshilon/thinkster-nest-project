@@ -17,6 +17,10 @@ import { ConvertPipe } from './util/convert.pipe';
     AppService, 
     RoomsRepository, 
     SpeakersRepository, 
-    SessionsRepository],
+    SessionsRepository,
+    {
+      provide: APP_PIPE,
+      useClass: ConvertPipe
+    }],
 })
 export class AppModule {}
