@@ -8,8 +8,7 @@ export class SpeakersController {
   constructor(private speakersRepository: SpeakersRepository) { }
 
   @Get(':id')
-  get(@Param('id') idStr: string) {
-    const id = parseInt(idStr, 10);
+  get(@Param('id') id: number) {
     return this.speakersRepository.get(id);
   }
 
@@ -32,15 +31,13 @@ export class SpeakersController {
   }
 
   @Put(':id')
-  update(@Param('id') idStr: string, @Body() speaker: unknown) {
-    const id = parseInt(idStr, 10);
+  update(@Param('id') id: number, @Body() speaker: unknown) {
     const speakerEntity = Object.assign(new SpeakerEntity(), speaker);
     return this.speakersRepository.update(id, speakerEntity);
   }
 
   @Delete(':id')
-  delete(@Param('id') idStr: string) {
-    const id = parseInt(idStr, 10);
+  delete(@Param('id') id: number) {
     return this.speakersRepository.delete(id);
   } 
 

@@ -103,7 +103,9 @@ export abstract class BaseRepository<T extends EntityBase, P extends ParamsBase>
   }
 
   async update(id: number, entity: T) {
-    const errors = await this.validateEntity(entity);
+    const oldEntity = await this.get(id);
+    const entityToUpdate = Object.assign(oldEntity, entity);
+    const errors = await this.validateEntity(entityToUpdate);
     if(errors.length > 0) {
       const message = errors.reduce((prev, cur) => prev + ', ' + cur, '');
       throw new EntityConstraintException(message);
@@ -111,7 +113,7 @@ export abstract class BaseRepository<T extends EntityBase, P extends ParamsBase>
     this.db
       .get(this.entityName)
       .find(x => (x.id as any) === id)
-      .assign(entity)
+      .assign(entityToUpdate)
       .write();
     return this.get(id);
   }

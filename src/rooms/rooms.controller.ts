@@ -1,6 +1,7 @@
-import { Controller, Get, Param, Query, Post, Body, Put, Delete } from '@nestjs/common';
+import { Controller, Get, Param, Query, Post, Body, Put, Delete, UsePipes } from '@nestjs/common';
 import { RoomsRepository } from 'src/data/repositories/rooms.repository';
 import { RoomEntity } from 'src/data/room.entity';
+import { ConvertPipe } from 'src/util/convert.pipe';
 
 @Controller('rooms')
 export class RoomsController {
@@ -8,8 +9,7 @@ export class RoomsController {
   constructor(private roomsRepository: RoomsRepository) {}
 
   @Get(':id')
-  get(@Param('id') idStr: string) {
-    const id = parseInt(idStr, 10);
+  get(@Param('id') id: number) {
     return this.roomsRepository.get(id);
   }
 
@@ -27,15 +27,13 @@ export class RoomsController {
   }
 
   @Put(':id')
-  update(@Param('id') idStr: string, @Body() room: unknown) {
-    const id = parseInt(idStr, 10);
+  update(@Param('id') id: number, @Body() room: unknown) {
     const roomEntity = Object.assign(new RoomEntity(), room);
     return this.roomsRepository.update(id, roomEntity);
   }
 
   @Delete(':id')
-  delete(@Param('id') idStr: string) {
-    const id = parseInt(idStr, 10);
+  delete(@Param('id') id: number) {
     return this.roomsRepository.delete(id);
   } 
   
