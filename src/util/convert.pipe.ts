@@ -24,7 +24,8 @@ export class ConvertPipe implements PipeTransform {
       return bool;
     }
 
-    return value;
+    const convertedValue = plainToClass(metadata.metatype, value);
+    return convertedValue;
 
   }
 }
