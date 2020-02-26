@@ -18,17 +18,15 @@ export class SessionsController {
   }
 
   @Post()
-  create(@Body() session: unknown) {
-    const sessionEntity = Object.assign(new SessionEntity(), session);
-    sessionEntity.createdBy = 'admin';
-    return this.sessionsRepository.create(sessionEntity);
+  create(@Body() session: SessionEntity) {
+    session.createdBy = 'admin';
+    return this.sessionsRepository.create(session);
   }
 
   @Put(':id')
-  update(@Param('id') id: number, @Body() session: unknown) {
-    const sessionEntity = Object.assign(new SessionEntity(), session);
-    sessionEntity.createdBy = 'admin';
-    return this.sessionsRepository.update(id, sessionEntity);
+  update(@Param('id') id: number, @Body() session: SessionEntity) {
+    session.createdBy = 'admin';
+    return this.sessionsRepository.update(id, session);
   }
 
   @Delete(':id')
