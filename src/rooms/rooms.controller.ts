@@ -20,16 +20,14 @@ export class RoomsController {
   }
 
   @Post()
-  create(@Body() room: unknown) {
-    const roomEntity = Object.assign(new RoomEntity(), room);
-    roomEntity.createdBy = 'admin';
-    return this.roomsRepository.create(roomEntity);
+  create(@Body() room: RoomEntity) {
+    room.createdBy = 'admin';
+    return this.roomsRepository.create(room);
   }
 
   @Put(':id')
-  update(@Param('id') id: number, @Body() room: unknown) {
-    const roomEntity = Object.assign(new RoomEntity(), room);
-    return this.roomsRepository.update(id, roomEntity);
+  update(@Param('id') id: number, @Body() room: RoomEntity) {
+    return this.roomsRepository.update(id, room);
   }
 
   @Delete(':id')
