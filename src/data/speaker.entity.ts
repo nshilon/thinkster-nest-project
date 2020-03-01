@@ -1,4 +1,4 @@
-import { IsDefined, IsString, IsNotEmpty, IsBoolean } from 'class-validator';
+import { IsDefined, IsString, IsNotEmpty, IsBoolean, IsOptional } from 'class-validator';
 
 // Exercise:
 // branch: exercise-validators
@@ -10,10 +10,11 @@ import { IsDefined, IsString, IsNotEmpty, IsBoolean } from 'class-validator';
 
 export class SpeakerEntity {
   id: number;
-  @IsDefined() @IsString() @IsNotEmpty()
+  @IsString() @IsNotEmpty()
   name: string;
+  @IsOptional() @IsString() @IsNotEmpty()
   bio?: string;
-  @IsDefined() @IsBoolean()
+  @IsBoolean()
   hasSpokeBefore: boolean;
   createdAt: Date = new Date();
   createdBy: string;
