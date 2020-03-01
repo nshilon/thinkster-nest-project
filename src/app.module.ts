@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, ValidationPipe } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { RoomsController } from './rooms/rooms.controller';
@@ -21,6 +21,9 @@ import { ConvertPipe } from './util/convert.pipe';
     {
       provide: APP_PIPE,
       useClass: ConvertPipe
+    }, {
+      provide: APP_PIPE,
+      useClass: ValidationPipe
     }],
 })
 export class AppModule {}
