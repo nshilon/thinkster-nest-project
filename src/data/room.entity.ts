@@ -1,4 +1,4 @@
-import { IsNumber, IsDefined, Min, IsString, IsNotEmpty } from 'class-validator';
+import { IsNumber, Min, IsString, IsNotEmpty } from 'class-validator';
 
 export class RoomEntity {
   id: number;
