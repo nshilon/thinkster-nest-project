@@ -1,3 +1,5 @@
+import { IsDefined, IsString, IsNotEmpty, IsBoolean } from 'class-validator';
+
 // Exercise:
 // branch: exercise-validators
 // Add decorators from class-validator to make sure that:
@@ -7,8 +9,10 @@
 
 export class SpeakerEntity {
   id: number;
+  @IsDefined() @IsString() @IsNotEmpty()
   name: string;
   bio?: string;
+  @IsDefined() @IsBoolean()
   hasSpokeBefore: boolean;
   createdAt: Date = new Date();
   createdBy: string;
