@@ -9,14 +9,15 @@ import { SessionsController } from './sessions/sessions.controller';
 import { SessionsRepository } from './data/repositories/sessions.repository';
 import { APP_PIPE } from '@nestjs/core';
 import { ConvertPipe } from './util/convert.pipe';
+import { SessionValidatorPipe } from './sessions/session-validator.pipe';
 
 @Module({
   imports: [],
   controllers: [AppController, RoomsController, SpeakersController, SessionsController],
   providers: [
-    AppService, 
-    RoomsRepository, 
-    SpeakersRepository, 
+    AppService,
+    RoomsRepository,
+    SpeakersRepository,
     SessionsRepository,
     {
       provide: APP_PIPE,
@@ -24,6 +25,10 @@ import { ConvertPipe } from './util/convert.pipe';
     }, {
       provide: APP_PIPE,
       useClass: ValidationPipe
+    },
+    {
+      provide: APP_PIPE,
+      useClass: SessionValidatorPipe
     }],
 })
-export class AppModule {}
+export class AppModule { }
