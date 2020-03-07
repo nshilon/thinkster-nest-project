@@ -35,6 +35,7 @@ export class SpeakersController {
   update(@Param('id') idStr: string, @Body() speaker: unknown) {
     const id = parseInt(idStr, 10);
     const speakerEntity = Object.assign(new SpeakerEntity(), speaker);
+    speakerEntity.createdBy = 'admin';
     return this.speakersRepository.update(id, speakerEntity);
   }
 

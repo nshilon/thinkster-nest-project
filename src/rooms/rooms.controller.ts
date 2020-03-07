@@ -30,6 +30,7 @@ export class RoomsController {
   update(@Param('id') idStr: string, @Body() room: unknown) {
     const id = parseInt(idStr, 10);
     const roomEntity = Object.assign(new RoomEntity(), room);
+    roomEntity.createdBy = 'admin';
     return this.roomsRepository.update(id, roomEntity);
   }
 
