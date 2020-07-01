@@ -18,16 +18,14 @@ export class SpeakersController {
   }
 
   @Post()
-  create(@Body() speaker: unknown) {
-    const speakerEntity = Object.assign(new SpeakerEntity(), speaker);
-    speakerEntity.createdBy = 'admin';
-    return this.speakersRepository.create(speakerEntity);
+  create(@Body() speaker: SpeakerEntity) {
+    speaker.createdBy = 'admin';
+    return this.speakersRepository.create(speaker);
   }
 
   @Put(':id')
-  update(@Param('id') id: number, @Body() speaker: unknown) {
-    const speakerEntity = Object.assign(new SpeakerEntity(), speaker);
-    return this.speakersRepository.update(id, speakerEntity);
+  update(@Param('id') id: number, @Body() speaker: SpeakerEntity) {
+    return this.speakersRepository.update(id, speaker);
   }
 
   @Delete(':id')
