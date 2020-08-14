@@ -42,10 +42,26 @@ export class DataInterceptor implements NestInterceptor {
       .handle()
       .pipe(
         map(result => {
-          return {
-            id: id,
-            data: result
-          };
+          const response = context.switchToHttp().getResponse();
+          const statusCode = response.statusCode;
+          if(Array.isArray(result.data)) {
+            const { data, ...rest } = result;
+            return {
+              id,
+              meta: {  
+                statusCode,              
+                ...rest
+              },
+              data
+            };
+          } else {
+            return {
+              id: id,
+              meta: { statusCode },
+              data: result
+            };
+          }
+          
         })
       );
   }
